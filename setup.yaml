@@ -1,0 +1,23 @@
+users:
+  - name: timescaledb
+    password: $POSTGRES_PASSWORD
+    role: SUPERUSER
+databases:
+  - name: timescaledb
+    owner: postgres
+    tablespace:
+      - name: tb1
+        location: /appz/timescaledb/data/tb1
+    schemas:
+      - name: schema1
+        authorised_user: postgres
+        search_path: true
+  - name: dotnet
+    owner: timescaledb
+    tablespace:
+      - name: tb1
+        location: /appz/data/tb1
+    schemas:
+      - name: schema1
+        authorised_user: timescaledb
+        search_path: true
