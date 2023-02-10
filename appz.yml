@@ -1,0 +1,36 @@
+app:
+    name: timescaledb
+    code: POSTGRES
+    notify: dkarthik@ecloudcontrol.com
+    
+build:
+    version: 2.7
+    env: DEV
+    build_file: none
+    output_files: output/*.zip
+    image_template: timescaledb-2.7
+    
+deploy:
+    context: dinesh-kd7/DEV
+    type: statefulset
+    ingress: none
+    replicas: 1
+    port:
+    - 5432
+    
+volumes:
+  - claim: postgres-master-data
+    mount: /appz/data
+    name: data
+    size: 5Gi
+    mode: ReadWriteOnce   
+    
+properties:
+    POSTGRESQL_REPLICATION_MODE: master
+    PGDATA: /appz/data/timescale
+    POSTGRESQL_CONNECTUSER: postgres
+    POSTGRESQL_CONNECTIONDB: postgres
+    POSTGRESQL_PORT: 5432
+    POSTGRES_PASSWORD: 
+      vault: POSTGRESQL_PASSWORD
+    revision : 0
